@@ -1,6 +1,6 @@
-# 服务端开发
+# Server Development Guide
 
-## 工具
+## Tools
 
 ### IntelliJ IDEA 2023.3.3 (Community Edition)
 
@@ -14,7 +14,7 @@
   --add-opens java.base/java.lang=ALL-UNNAMED
   ```
 
-## 运行
+## Run
 
 ### 虚拟机参数
 
@@ -22,3 +22,11 @@
 --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED
 ```
 
+## APStack
+
+### Base Type Mapping
+
+| Type      | APS Type               |
+| --------- | ---------------------- |
+| timestamp | BaseType.U_TXN_TM_INTG |
+| flag      | EftipltEnum.E_WTHR_FLG |
