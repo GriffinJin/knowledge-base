@@ -1,4 +1,58 @@
-# 1 Dual-token Authentication
+# 开发环境
+
+BAYPOCDEV
+
+* [Confluence环境清单](http://10.10.20.101:8090/pages/viewpage.action?pageId=78839857)
+* [CD服务端](http://10.10.20.204:8080/modules/edsp-cd-ui-2_dot_5_dot_7_release/index.html#/Deliver/AppManage/package/ConfigMange?clusterId=67d1345b6c698a10327b24ad&clusterName=BDS-BAY-%E6%9C%8D%E5%8A%A1%E7%AB%AF&modelId=65b9f4e66c698a7d597e4405&sceneId=)
+
+**代码**
+
+* bds-server bds-bay-dev
+
+# 引入SpringSecurity安全框架
+
+## 认证白名单
+
+**白名单列表**
+
+* /twsp/rdplogincheck 柜员登录前查询所属机构
+* /twsp/rdploginouttemp BDS支持在未登录状态进行柜员签退（即使没有登录）
+* /twsp/rdpssologinin 登录接口
+
+**开发流程**
+
+1. springboot配置增加认证白名单，`spring.security.authentication.whitelist`，本地环境需要在application-bdsdev.properteis也进行修改，直接在j2文件中写死；（*白名单进行配置意义不大，如果需要新增无需认证的接口，一般只会是新开发的需求，直接在开发新功能的时候一并改好白名单*）
+2. SecurtyConfig中配置白名单。
+
+**代码截图**
+
+![image-20250612224909943](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250612224909943.png)
+
+![image-20250612224948345](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250612224948345.png)
+
+![image-20250612225009916](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250612225009916.png)
+
+**环境发版验证**
+
+![image-20250613004120472](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613004120472.png)
+
+## JWT拦截器
+
+**开发流程**
+
+1. 自定义JWT过滤器；
+
+   ==[TODO]等前端开发完成之后需要修改读取token的方式为名为Authorization的请求头==
+
+2. 加入JWT过滤器到SpringSecurity安全过滤器链；
+
+3. 自定义认证失败返回处理；（接口响应符合BDS规范）
+
+**代码截图**
+
+![image-20250613005048789](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613005048789.png)
+
+# 1 双令牌认证
 
 The backend generates two JWT tokens: an access_token and a refresh_token.
 
