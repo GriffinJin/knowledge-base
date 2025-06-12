@@ -9,7 +9,11 @@ BAYPOCDEV
 
 * bds-server bds-bay-dev
 
-# 引入SpringSecurity安全框架
+# 基于JWT基础会话管理
+
+## 引入SpringSecurity安全框架
+
+
 
 ## 认证白名单
 
