@@ -6,7 +6,21 @@ In the BDS system, servers will not transmit raw JWT tokens to the frontend.
 
 # 2 Development Process
 
-## 2.1 服务端登录接口返回 access_token 和 refresh_token
+## Authentication-free APIs
+
+* **rdplogincheck**
+
+  Fetch login teller's branch id before login.
+
+* **rdpssologinin**
+
+  Login API.
+
+* **rdploginouttemp**
+
+  The BDS system supports teller logout functionality even when the teller has not logged in.
+
+## Login API return dual-token
 
 登录接口为 `/twsp/rdpssologinin`，所属模块 `euc-server.com-euc-uams-parent-com-euc-uams-aplt`
 
@@ -68,32 +82,35 @@ Refresh Token 开发中遇到的问题
 
 
 
-场景案例
+# Demonstration Cases
 
----
+Token validity period
 
-**案例一**  反例 柜员凭证错误
+* access_token 2 min
 
-1. 清空浏览器缓存，避免影响。
-2. 进入eps系统，打开调试工具。
-3. 使用柜员【xxxx】错误凭证登录。
-4. 查看调试工具网络工具下的 /rdpssologinin API 返回的数据中不包含 access_token.
+* refresh_token 5 min
 
-系统提示柜员密码错误。
+## CASE 1 BDS Generate Dual-token
 
----
+Upon successful authentication of the login request, the backend will issue both an access token and a refresh token to the client-side application.
 
-**案例二**  正例 柜员凭证正确，获取access_token 和 refresh_token
+1. Clear the browser cache to avoid potential conflicts.
 
-1. 清空浏览器缓存，避免影响。
-2. 进入eps系统，打开调试工具。
-3. 使用柜员【xxxx】正确凭证登录。进入主页
-4. 查看浏览器调试工具网络工具下的 /rdpssologinin api 返回的数据中包含access_token.
-5. 查看浏览器调试工具 application工具下的 local storage 中存储了access_token 以及 cookies 工具下存储了 refresh_token.
+2. Log into the EPS system and launch the browser's developer console.
 
----
+3. Authenticate with teller [xxxx]'s valid credentials.
 
-**案例三** 正例 每次请求头中携带正确 token
+   **Expected Outcome**: Navigate to the workspace.
+
+4. Monitor the `/rdpssologin` API calls in the Network panel of browser's developer tools.
+
+   **Expected Outcome**: The response payload includes an `access_token` and a `refresh_token`.
+
+5. Inspect the Local Storage data in the Application panel of browser's developer tools.
+
+   **Expected Outcome**: The Local Storage persistenly contains both the access_token and refresh_token.
+
+## CASE 2 Carry Access-token Each Request
 
 1. 在案例二的基础上（需要在登录成功之后的二分钟之内）；
 2. 打开【xxxx】交易，进行查询操作；
@@ -101,7 +118,7 @@ Refresh Token 开发中遇到的问题
 4. 验证请求头中的 access_token 和 调试工具的application工具下localstorage中存储的access_token 是否一致；
 5. 正常进行交易；
 
----
+## CASE 3 BDS Server Valid Access-token
 
 **案例四** 反例 后端在请求过程中验证 access_token
 
@@ -111,9 +128,9 @@ Refresh Token 开发中遇到的问题
 
 接口返回401认证失败。
 
----
+## CASE 4 Refresh Access-token
 
-**案例五** 正例 在refresh有效期内获取新token
+正例 在refresh有效期内获取新token
 
 1. 在案例三的基础上（需要间隔2分钟以上）；
 2. 记录当前localstorage中存储的access_token
@@ -123,9 +140,7 @@ Refresh Token 开发中遇到的问题
 6. 查看浏览器调试工具的网络工具，调用的【xxx】交易的【xxx】接口；
 7. 请求头中的 Authorization 的值 和 步骤5中返回的 access_token 一致，并且和步骤2记录的 access_token 不一致；
 
----
-
-**案例六** 正例 在refresh_token 有效期外会话结束
+## CASE 5 Refresh-token expired
 
 1. 在案例三的基础上（案例三完成5分钟后）；
 2. 重复案例三的步骤2；

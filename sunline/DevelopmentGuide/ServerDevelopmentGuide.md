@@ -30,3 +30,14 @@
 | --------- | ---------------------- |
 | timestamp | BaseType.U_TXN_TM_INTG |
 | flag      | EftipltEnum.E_WTHR_FLG |
+
+### Http
+
+1. Get raw http request and raw http response.
+
+   ```java
+   HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+           HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+   ```
+
+   
