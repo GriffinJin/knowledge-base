@@ -459,3 +459,9 @@ tapp_first_menu
 
 ## 周五 六月二十日
 
+### tuap_user_run_data 改造
+
+* access_token
+* refresh_token
+* revoked
+* ref_issue_at
