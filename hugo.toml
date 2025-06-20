@@ -1,6 +1,6 @@
 # hugo server --minify --themesDir ../.. --baseURL=http://0.0.0.0:1313/theme/hugo-book/
 
-baseURL = 'https://example.com/'
+baseURL = 'https://GriffinJin.github.io/knowledge-base/'
 title = 'GRF_Knowledge Base'
 theme = 'hugo-book'
 
