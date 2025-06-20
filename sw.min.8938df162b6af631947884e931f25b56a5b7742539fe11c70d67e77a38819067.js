@@ -1,0 +1,1 @@
+navigator.serviceWorker&&navigator.serviceWorker.register("/knowledge-base/sw.js",{scope:"/knowledge-base/"})
