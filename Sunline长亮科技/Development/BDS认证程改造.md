@@ -8,19 +8,18 @@ BAYPOCDEV
 **代码**
 
 * bds-server bds-bay-dev
+* eft-server eft-base-dev-233
 
 # 基于JWT基础会话管理
 
 ## 引入SpringSecurity安全框架
-
-
 
 ## 认证白名单
 
 **白名单列表**
 
 * /twsp/rdplogincheck 柜员登录前查询所属机构
-* /twsp/rdploginouttemp BDS支持在未登录状态进行柜员签退（即使没有登录）
+* `/twsp/rdploginouttemp` BDS支持在未登录状态进行柜员签退（即使没有登录）
 * /twsp/rdpssologinin 登录接口
 
 **开发流程**
@@ -56,27 +55,56 @@ BAYPOCDEV
 
 ![image-20250613005048789](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613005048789.png)
 
-# 1 双令牌认证
+![image-20250613101650560](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613101650560.png)
 
-The backend generates two JWT tokens: an access_token and a refresh_token.
+## 登录接口改造
 
-In the BDS system, servers will not transmit raw JWT tokens to the frontend.
+`/rdpssologinin`
+
+## 签退接口改造
+
+`/twsp/rdploginouttemp` euc-server
+
+# 双令牌认证机制
+
+后端通过前端发送的认证请求之后，生成访问令牌（access_token）和刷新令牌(refresh_token)返回给前端。
+
+## 登录接口改造-生成双令牌
+
+登录接口 `/rdpssologinin`
+
+**开发流程**
+
+1. **增加字典**
+
+   eft-server/EftApltDict.d_schema.xml 中增加 access_token 和 refresh_token 字典。
+
+2. **增加接口输出参数**
+
+   euc-server/rdpssologinin.flowtrans.xml
+
+3. **增加实现输出参数**
+
+   egm-server/UamsPrcSvtp.serviceType.xml
+
+4. **登录实现生成双令牌**
+
+**代码截图**
+
+![image-20250613113548346](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613113548346.png)
+
+![image-20250613114116179](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613114116179.png)
+
+![image-20250613140153234](https://gcore.jsdelivr.net/gh/GriffinJin/image-host@main/image/image-20250613140153234.png)
+
+**发版验证**
+
+* eft-server
+* egm-server
+* euc-server
+* Bds-server
 
 # 2 Development Process
-
-## Authentication-free APIs
-
-* **rdplogincheck**
-
-  Fetch login teller's branch id before login.
-
-* **rdpssologinin**
-
-  Login API.
-
-* **rdploginouttemp**
-
-  The BDS system supports teller logout functionality even when the teller has not logged in.
 
 ## Login API return dual-token
 
