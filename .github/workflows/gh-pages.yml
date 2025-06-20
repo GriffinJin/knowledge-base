@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]  # 推送 main 分支触发部署
 
+permissions:  # ✅ 显式设置权限
+  contents: write  # ✅ 允许写入仓库内容（如推送 gh-pages）
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
